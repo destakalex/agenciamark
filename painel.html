@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>Painel · Destak</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}body{font-family:Fredoka,sans-serif;background:#F4F1E8;color:#1b1b1b;padding:24px;max-width:1100px;margin:auto}
+h1{font-size:1.8rem}p{margin:6px 0 16px;opacity:.75}
+textarea{width:100%;font:inherit;padding:10px;border:3px solid #111;border-radius:14px;margin-bottom:22px}
+.g{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:22px}
+.c{border:3px solid #111;border-radius:18px;padding:10px;background:#fff;box-shadow:4px 4px 0 #111}
+.c video{width:100%;border-radius:10px;background:#000;display:block;min-height:120px}
+.c b{display:block;margin:8px 0}.c.miss{opacity:.45}
+.c button,.c a{display:block;width:100%;margin-top:6px;border:2px solid #111;border-radius:30px;padding:7px;font:700 .85rem Fredoka,sans-serif;text-align:center;text-decoration:none;color:#111;cursor:pointer;background:#FFC93C}
+.c button.w{background:#25D366;color:#fff}.c a{background:#fff}
+</style></head><body>
+<h1>Painel de vídeos · Destak</h1>
+<p>Só para si. Escolha o vídeo, copie o link e envie ao cliente.</p>
+<textarea id="msg" rows="2">Olá! Preparei este vídeo especialmente para si 👇</textarea>
+<div class="g" id="g"></div>
+<script>
+/* EDITE AQUI: ["nome do ficheiro sem .mp4", "título que vê no painel"] */
+var VIDEOS=[["01","Vídeo 01"],["02","Vídeo 02"],["03","Vídeo 03"],["04","Vídeo 04"],["05","Vídeo 05"],["06","Vídeo 06"],["07","Vídeo 07"],["08","Vídeo 08"],["09","Vídeo 09"],["10","Vídeo 10"]];
+var PASTA="videos/",BASE=location.origin+location.pathname.replace(/[^\/]*$/,'');
+var g=document.getElementById('g'),msg=document.getElementById('msg');
+VIDEOS.forEach(function(x){
+  var link=BASE+'?v='+x[0],c=document.createElement('div');c.className='c';
+  c.innerHTML='<video controls playsinline preload="metadata" controlslist="nodownload" src="'+PASTA+x[0]+'.mp4#t=0.1"></video><b></b><button class="cp" type="button">🔗 Copiar link</button><button class="w" type="button">💬 Enviar por WhatsApp</button><a target="_blank" rel="noopener" href="'+link+'">👁 Ver como o cliente</a>';
+  c.querySelector('b').textContent=x[1];
+  c.querySelector('video').addEventListener('error',function(){c.classList.add('miss');c.querySelector('b').textContent=x[1]+' (ficheiro não encontrado)'});
+  c.querySelector('.cp').addEventListener('click',function(){var b=this;
+    function ok(){b.textContent='✅ Link copiado';setTimeout(function(){b.textContent='🔗 Copiar link'},1800)}
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(link).then(ok,function(){prompt('Copie o link:',link)})}else{prompt('Copie o link:',link)}});
+  c.querySelector('.w').addEventListener('click',function(){window.open('https://wa.me/?text='+encodeURIComponent(msg.value+'\n'+link),'_blank')});
+  g.appendChild(c);
+});
+</script></body></html>
