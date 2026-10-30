@@ -148,6 +148,13 @@ footer{text-align:center;padding:24px;font-size:.9rem}
 .btn.big{font-size:1.2rem;padding:13px 30px}
 .float-wa{font-size:.85rem;padding:8px 14px;right:14px;bottom:14px}
 @media(prefers-reduced-motion:reduce){.dk i{opacity:1!important;transform:none!important}}
+.dv-r{display:flex;gap:6px;align-items:center}
+.dv-snd{border:2px solid #111;background:#fff;color:#111;font-size:.85rem;padding:3px 8px;border-radius:20px;cursor:pointer}
+.dv-bar>span:first-child{font-size:.8rem}
+.dv-copy{padding:4px 8px}
+.dv-solo-snd{border:3px solid #111;background:#FFC93C;color:#111;font:700 1rem Fredoka,sans-serif;padding:9px 18px;border-radius:40px;cursor:pointer;box-shadow:3px 3px 0 #111}
+.dv-solo-snd.pulse{animation:snd 1.4s ease-in-out infinite}
+@keyframes snd{50%{transform:scale(1.08)}}
 </style>
 <script>
 /* ===== CONFIGURAÇÃO EDITÁVEL DO WHATSAPP ===== */
@@ -299,19 +306,22 @@ var DV_PASTA="videos/";
 var DV_LISTA=["01","02","03","04","05","06","07","08","09","10"];
 (function(){
   var grid=document.getElementById('dvGrid'),cards=[];
+  var som=false;
+  function icons(){cards.forEach(function(o){o.querySelector('.dv-snd').textContent=som?'🔊':'🔇'})}
   function pause(c){c.firstChild.pause();c.classList.remove('on')}
   function play(c){var v=c.firstChild;if(!v.getAttribute('src'))v.src=v.dataset.src;
     cards.forEach(function(o){if(o!==c)pause(o)});
-    var p=v.play();if(p&&p.catch)p.catch(function(){});c.classList.add('on')}
+    v.muted=!som;var p=v.play();
+    if(p&&p.catch)p.catch(function(){v.muted=true;som=false;icons();var p2=v.play();if(p2&&p2.catch)p2.catch(function(){})});
+    c.classList.add('on')}
   var io=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){
     if(e.isIntersecting){var v=e.target.firstChild;if(!v.getAttribute('src')){v.preload='metadata';v.src=v.dataset.src+'#t=0.1'}io.unobserve(e.target)}})},{rootMargin:'300px'}):null;
   DV_LISTA.forEach(function(n){
     var c=document.createElement('div');c.className='dv-card';c.id='v'+n;
-    c.innerHTML='<video muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback" data-src="'+DV_PASTA+n+'.mp4"></video><div class="dv-wm">DESTAK</div><div class="dv-bar"><span>Destak · '+n+'</span><button class="dv-copy" type="button">🔗 Copiar link</button></div>';
+    c.innerHTML='<video muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback" data-src="'+DV_PASTA+n+'.mp4"></video><div class="dv-wm">DESTAK</div><div class="dv-bar"><span>Destak · '+n+'</span><span class="dv-r"><button class="dv-snd" type="button" aria-label="Som">🔇</button><button class="dv-copy" type="button">🔗 Copiar link</button></span></div>';
     var v=c.firstChild;
     v.addEventListener('loadedmetadata',function(){if(v.videoWidth)c.style.aspectRatio=v.videoWidth+'/'+v.videoHeight});
     c.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')play(c)});
-    c.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')pause(c)});
     c.addEventListener('click',function(){c.classList.contains('on')?pause(c):play(c)});
     c.addEventListener('contextmenu',function(e){e.preventDefault()});
     c.querySelector('.dv-copy').addEventListener('click',function(e){
@@ -319,6 +329,7 @@ var DV_LISTA=["01","02","03","04","05","06","07","08","09","10"];
       function ok(){b.textContent='✅ Link copiado';setTimeout(function(){b.textContent='🔗 Copiar link'},1800)}
       if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){prompt('Copie o link:',u)})}else{prompt('Copie o link:',u)}
     });
+    c.querySelector('.dv-snd').addEventListener('click',function(e){e.stopPropagation();som=!som;icons();cards.forEach(function(o){if(o.classList.contains('on'))o.firstChild.muted=!som})});
     grid.appendChild(c);cards.push(c);
     if(io)io.observe(c);else{v.preload='metadata';v.src=v.dataset.src+'#t=0.1'}
   });
@@ -327,9 +338,14 @@ var DV_LISTA=["01","02","03","04","05","06","07","08","09","10"];
   var q=new URLSearchParams(location.search).get('v');
   if(q&&DV_LISTA.indexOf(q)>-1){
     var W=(typeof WHATSAPP!=='undefined')?WHATSAPP:null,o=document.createElement('div');o.className='dv-solo';
-    o.innerHTML='<div class="dk"><i>D</i><i>E</i><i>S</i><i>T</i><i>A</i><i class="k">K</i></div><div class="dv-solo-box"><video muted loop playsinline autoplay preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback" src="'+DV_PASTA+q+'.mp4"></video><div class="dv-wm">DESTAK</div></div><div class="dv-solo-bot">'+(W?'<a class="btn" target="_blank" rel="noopener" href="https://wa.me/'+W.numero+'?text='+encodeURIComponent(W.mensagem)+'">'+W.texto+'</a>':'')+'<a class="dv-full" href="'+location.pathname+'">Ver o site completo</a></div>';
+    o.innerHTML='<div class="dk"><i>D</i><i>E</i><i>S</i><i>T</i><i>A</i><i class="k">K</i></div><div class="dv-solo-box"><video loop playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback" src="'+DV_PASTA+q+'.mp4"></video><div class="dv-wm">DESTAK</div></div><div class="dv-solo-bot"><button class="dv-solo-snd" type="button">🔊 Ativar som</button>'+(W?'<a class="btn" target="_blank" rel="noopener" href="https://wa.me/'+W.numero+'?text='+encodeURIComponent(W.mensagem)+'">'+W.texto+'</a>':'')+'<a class="dv-full" href="'+location.pathname+'">Ver o site completo</a></div>';
     document.body.appendChild(o);
-    var sv=o.querySelector('video');
+    var sv=o.querySelector('video'),sb=o.querySelector('.dv-solo-snd');
+    function ps(){var p=sv.play();if(p&&p.catch)p.catch(function(){})}
+    function sbt(){sb.textContent=sv.muted?'🔊 Ativar som':'🔇 Desativar som';sb.classList.toggle('pulse',sv.muted)}
+    sv.addEventListener('volumechange',sbt);sbt();
+    sv.muted=false;var p0=sv.play();if(p0&&p0.catch)p0.catch(function(){sv.muted=true;ps()});
+    sb.addEventListener('click',function(){sv.muted=!sv.muted;if(sv.paused)ps()});
     o.querySelector('.dv-solo-box').addEventListener('click',function(){sv.paused?sv.play():sv.pause()});
     o.addEventListener('contextmenu',function(e){e.preventDefault()});
   }
