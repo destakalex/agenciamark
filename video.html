@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-PT"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:title" content="Destak · Agência de Market">
+<meta property="og:description" content="Preparámos um vídeo para si">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; media-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<title>Destak · Vídeo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:16px;background:linear-gradient(135deg,#1b1b1b,#2b2150);color:#fff;font-family:Fredoka,sans-serif}
+.dk{display:inline-flex;gap:.06em;font:700 clamp(1.8rem,6vw,3rem) Fredoka,sans-serif;letter-spacing:.1em;text-shadow:2px 2px 0 #111}
+.dk i{font-style:normal;display:inline-block;opacity:0;transform:translateY(-34px) scale(.3) rotate(-25deg);animation:dkin .6s cubic-bezier(.2,1.6,.4,1) var(--d) forwards}
+.dk i:nth-child(1){color:#FF6B4A;--d:.1s}.dk i:nth-child(2){color:#3B6BFF;--d:.3s}
+.dk i:nth-child(3){color:#8B5CF6;--d:.5s}.dk i:nth-child(4){color:#2ED3A0;--d:.7s}
+.dk i:nth-child(5){color:#FF6B4A;--d:.9s}.dk i:nth-child(6){color:#3B6BFF;--d:1.1s}
+.dk i:nth-child(odd){animation:dkin .6s cubic-bezier(.2,1.6,.4,1) var(--d) forwards,hop 10s ease-in-out calc(var(--d) + 1.8s) infinite}
+.dk i:nth-child(even){transform-origin:50% 100%;animation:dkin .6s cubic-bezier(.2,1.6,.4,1) var(--d) forwards,sway 10s ease-in-out calc(var(--d) + 1.8s) infinite}
+@keyframes dkin{to{opacity:1;transform:none}}
+@keyframes hop{0%{transform:none}4%{transform:translateY(-.5em) scaleY(1.12)}8%{transform:scaleY(.82)}12%{transform:translateY(-.3em)}16%{transform:scaleY(.92)}20%,100%{transform:none}}
+@keyframes sway{0%{transform:rotate(0)}4%{transform:rotate(-14deg)}9%{transform:rotate(12deg)}14%{transform:rotate(-8deg)}19%{transform:rotate(4deg)}24%,100%{transform:rotate(0)}}
+.box{position:relative;border:4px solid #fff;border-radius:20px;overflow:hidden;cursor:pointer;line-height:0;background:#000}
+.box video{display:block;max-width:92vw;max-height:62vh;pointer-events:none}
+.wm{position:absolute;z-index:1;top:8%;left:6%;font:700 1.4rem Fredoka,sans-serif;letter-spacing:.2em;color:rgba(255,255,255,.4);text-shadow:1px 1px 0 rgba(0,0,0,.45);pointer-events:none;animation:wm 14s linear infinite}
+@keyframes wm{0%,100%{top:8%;left:6%}25%{top:14%;left:52%}50%{top:72%;left:48%}75%{top:62%;left:8%}}
+.big{position:absolute;inset:0;margin:auto;width:max-content;height:max-content;z-index:3;border:3px solid #111;background:#FFC93C;color:#111;font:700 1.1rem Fredoka,sans-serif;padding:12px 22px;border-radius:40px;cursor:pointer;box-shadow:3px 3px 0 #111;line-height:1.2;animation:snd 1.4s ease-in-out infinite}
+.big[hidden]{display:none}
+@keyframes snd{50%{transform:scale(1.08)}}
+.ctl{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.14);border-radius:40px;padding:6px 14px}
+.ctl button{border:0;background:none;color:#fff;font-size:1.3rem;cursor:pointer;line-height:1}
+.vol{width:110px;accent-color:#FFC93C}
+.info{min-height:1.2em;font-size:.85rem;opacity:.85;text-align:center}
+.bot{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:center}
+.wa{background:#25D366;color:#fff;text-decoration:none;font-weight:700;font-size:.72rem;padding:5px 13px;border:2px solid #111;border-radius:40px;box-shadow:2px 2px 0 #111}
+.full{color:#fff;font-weight:700;font-size:.8rem;border:2px solid #fff;border-radius:30px;padding:5px 13px;text-decoration:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.dk i{opacity:1!important;transform:none!important}}
+</style></head>
+<body>
+<div class="dk" aria-label="Destak"><i>D</i><i>E</i><i>S</i><i>T</i><i>A</i><i>K</i></div>
+<div class="box" id="box"><video id="v" playsinline preload="auto" disablepictureinpicture disableremoteplayback controlslist="nodownload noremoteplayback noplaybackrate"></video><div class="wm">DESTAK</div><button class="big" id="big" type="button" hidden>▶ Toque para ver</button></div>
+<div class="ctl"><button id="pp" type="button" aria-label="Pausar">⏸</button><button id="mu" type="button" aria-label="Som">🔊</button><input class="vol" id="vol" type="range" min="0" max="1" step="0.05" value="1" aria-label="Volume"></div>
+<p class="info" id="info"></p>
+<div class="bot"><a class="wa" id="wa" target="_blank" rel="noopener" href="#"></a><a class="full" id="full" href="./">Ir para o site ➜</a></div>
+<script>
+/* ===== CONFIGURAÇÃO ===== */
+var WHATSAPP={numero:"351923176670",mensagem:"Olá! Vi o vídeo e gostava de saber mais.",texto:"💬 Falar no WhatsApp"};
+var PASTA="videos/";   /* pasta dos vídeos */
+var SITE="./";         /* para onde vai no fim (página principal) */
+var ESPERA=8;          /* segundos até abrir o site, depois do 1.º visionamento */
+(function(){
+  function $(i){return document.getElementById(i)}
+  function go(){location.replace(SITE)}
+  var q=new URLSearchParams(location.search).get('v');
+  if(!q||!/^[A-Za-z0-9_-]{1,40}$/.test(q)){go();return}
+  var v=$('v'),big=$('big'),pp=$('pp'),mu=$('mu'),vol=$('vol'),info=$('info'),plays=0,mode='start',cd=null;
+  $('wa').href='https://wa.me/'+WHATSAPP.numero+'?text='+encodeURIComponent(WHATSAPP.mensagem);$('wa').textContent=WHATSAPP.texto;
+  v.src=PASTA+q+'.mp4#t=0.1';
+  function ps(){var p=v.play();if(p&&p.catch)p.catch(function(){big.textContent='▶ Toque para ver';big.hidden=false})}
+  function stopCd(){clearInterval(cd);info.textContent=''}
+  v.volume=1;v.muted=false;ps();   /* tenta já com som; se o navegador bloquear, aparece o botão */
+  v.addEventListener('play',function(){big.hidden=true;stopCd();pp.textContent='⏸'});
+  v.addEventListener('pause',function(){pp.textContent='▶'});
+  v.addEventListener('volumechange',function(){mu.textContent=(v.muted||v.volume===0)?'🔇':'🔊';vol.value=v.muted?0:v.volume});
+  v.addEventListener('ended',function(){
+    plays++;
+    if(plays<2){
+      mode='replay';big.style.animation='';big.textContent='↻ Ver mais uma vez';big.hidden=false;
+      var n=ESPERA;function t(){info.textContent='Ou aguarde: a abrir o site em '+n+'s…'}t();
+      cd=setInterval(function(){n--;if(n<=0){clearInterval(cd);go()}else t()},1000);
+    }else{mode='final';big.style.animation='none';big.textContent='A abrir o site…';big.hidden=false;setTimeout(go,1500)}
+  });
+  v.addEventListener('error',function(){mode='err';big.style.animation='none';big.textContent='Vídeo indisponível';big.hidden=false});
+  function tog(){
+    if(mode==='final'||mode==='err')return;
+    if(mode==='replay'&&v.ended){stopCd();mode='start';v.currentTime=0;ps();return}
+    v.paused?ps():v.pause();
+  }
+  $('box').addEventListener('click',tog);pp.addEventListener('click',tog);
+  mu.addEventListener('click',function(){if(v.muted||v.volume===0){v.muted=false;if(v.volume===0)v.volume=.6}else v.muted=true});
+  vol.addEventListener('input',function(){v.volume=+vol.value;v.muted=(+vol.value===0)});
+  $('full').addEventListener('click',function(e){e.preventDefault();go()});
+  document.addEventListener('contextmenu',function(e){e.preventDefault()});
+})();
+</script></body></html>

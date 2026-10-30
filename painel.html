@@ -26,7 +26,7 @@ var VIDEOS=[["01","Vídeo 01"],["02","Vídeo 02"],["03","Vídeo 03"],["04","Víd
 var PASTA="videos/",BASE=location.origin+location.pathname.replace(/[^\/]*$/,'');
 var g=document.getElementById('g'),msg=document.getElementById('msg');
 VIDEOS.forEach(function(x){
-  var link=BASE+'?v='+x[0],c=document.createElement('div');c.className='c';
+  var link=BASE+'video.html?v='+x[0],c=document.createElement('div');c.className='c';
   c.innerHTML='<video controls playsinline preload="metadata" controlslist="nodownload" src="'+PASTA+x[0]+'.mp4#t=0.1"></video><b></b><button class="cp" type="button">🔗 Copiar link</button><button class="w" type="button">💬 Enviar por WhatsApp</button><a target="_blank" rel="noopener" href="'+link+'">👁 Ver como o cliente</a>';
   c.querySelector('b').textContent=x[1];
   c.querySelector('video').addEventListener('error',function(){c.classList.add('miss');c.querySelector('b').textContent=x[1]+' (ficheiro não encontrado)'});
